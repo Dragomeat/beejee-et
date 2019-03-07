@@ -49,7 +49,9 @@
                                 Выйти
                             </a>
 
-                            <form id="logout-form" action="/logout" method="POST" style="display: none;"></form>
+                            <form id="logout-form" action="/logout" method="POST" style="display: none;">
+                                <input type="hidden" name="<?= $this->csrf()->getFormKey() ?>" value="<?= $this->csrf()->generateToken() ?>"/>
+                            </form>
                         </div>
                     </li>
                     <?php endif; ?>

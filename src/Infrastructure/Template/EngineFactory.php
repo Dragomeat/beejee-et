@@ -21,6 +21,10 @@ class EngineFactory
             $container->get(PagerfantaExtension::class)
         );
 
+        $engine->loadExtension(
+            $container->get(CsrfExtension::class)
+        );
+
         $engine->addFolder('tasks', __DIR__.'/../../../resources/views/tasks');
 
         return $engine;

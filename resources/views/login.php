@@ -8,6 +8,8 @@
 
                 <div class="card-body">
                     <form method="POST" action="/login">
+                        <input type="hidden" name="<?= $this->csrf()->getFormKey() ?>" value="<?= $this->csrf()->generateToken() ?>"/>
+
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">E-mail адрес</label>
 

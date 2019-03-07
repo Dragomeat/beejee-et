@@ -3,6 +3,8 @@
 <div class="container">
     <div class="row">
         <form class="form-inline" action="" method="POST">
+            <input type="hidden" name="<?= $this->csrf()->getFormKey() ?>" value="<?= $this->csrf()->generateToken() ?>"/>
+
             <?php if (!$this->auth()->isAuthenticated()): ?>
                 <div class="form-group mb-2">
                     <input class="form-control" name="name" type="text" placeholder="Ваше имя"/>
@@ -49,7 +51,9 @@
         </form>
     </div>
     <div class="row">
-        <form id="complete-form" class="form-inline" style="display: none;" action="" method="POST"></form>
+        <form id="complete-form" class="form-inline" style="display: none;" action="" method="POST">
+            <input type="hidden" name="<?= $this->csrf()->getFormKey() ?>" value="<?= $this->csrf()->generateToken() ?>"/>
+        </form>
         <div class="card-columns mb-3">
             <?php if (count($tasks) > 0): ?>
                 <?php foreach ($tasks as $task): ?>

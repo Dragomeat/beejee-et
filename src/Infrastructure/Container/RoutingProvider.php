@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace BeeJeeET\Infrastructure\Container;
 
+use NDC\Csrf\CsrfMiddleware;
 use League\Container\Container;
 use League\Route\Router as LeagueRouter;
 use BeeJeeET\Infrastructure\Routing\RouterHandler;
 use BeeJeeET\Infrastructure\Routing\RouterHandlerFactory;
 use BeeJeeET\Infrastructure\Routing\LeagueRouterFactory;
+use BeeJeeET\Infrastructure\Routing\CsrfMiddlewareFactory;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 class RoutingProvider extends AbstractServiceProvider
 {
     protected $provides = [
         RouterHandler::class,
-        LeagueRouter::class
+        LeagueRouter::class,
+        CsrfMiddleware::class,
     ];
 
     public function register(): void
@@ -33,6 +36,11 @@ class RoutingProvider extends AbstractServiceProvider
         $container->add(
             LeagueRouter::class,
             [new LeagueRouterFactory, '__invoke']
+        )->addArgument($container);
+
+        $container->share(
+            CsrfMiddleware::class,
+            [new CsrfMiddlewareFactory, '__invoke']
         )->addArgument($container);
     }
 }

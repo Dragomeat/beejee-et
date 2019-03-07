@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10572532650aa5c49c56cb817edd8464",
+    "content-hash": "4220139d264c09ddb7219c5ea4bdea2a",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -275,6 +275,59 @@
                 "routing"
             ],
             "time": "2018-02-13T20:26:39+00:00"
+        },
+        {
+            "name": "nuboxdevcom/psr15-csrf-middleware",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/NuBOXDevCom/PSR15-CsrfMiddleware.git",
+                "reference": "74c62fba2750ab90f102b3bcd071583ca6abe644"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/NuBOXDevCom/PSR15-CsrfMiddleware/zipball/74c62fba2750ab90f102b3bcd071583ca6abe644",
+                "reference": "74c62fba2750ab90f102b3bcd071583ca6abe644",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.10",
+                "phpunit/phpunit": "^6.5",
+                "satooshi/php-coveralls": "^2.0",
+                "squizlabs/php_codesniffer": "^3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "NDC\\Csrf\\": "src",
+                    "Tests\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "NuBOX DevCom",
+                    "email": "slye@nubox.fr",
+                    "homepage": "https://github.com/nuboxdevcom",
+                    "role": "developer"
+                }
+            ],
+            "description": "PSR15 Middleware For CSRF Security",
+            "keywords": [
+                "csrf",
+                "middleware",
+                "nuboxdevcom",
+                "psr15",
+                "security"
+            ],
+            "time": "2018-01-28T12:30:52+00:00"
         },
         {
             "name": "pagerfanta/pagerfanta",
