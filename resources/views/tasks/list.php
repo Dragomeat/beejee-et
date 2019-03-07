@@ -62,7 +62,7 @@
                             <p class="card-text"><?= $this->e($task->goal) ?></p>
                             <p class="card-text">
                                 <small class="text-muted">
-                                    <?= $this->e($task->performer->name) ?>
+                                    @<?= $this->e($task->performer->name) ?> - <?= $this->e($task->isCompleted) ? 'Завершена' : 'Активна' ?>
                                 </small>
                             </p>
 
@@ -83,9 +83,7 @@
                                             class="custom-control-input"
                                             <?= (int)$this->e($task->isCompleted) ? 'checked' : '' ?>
                                             id="customSwitch-<?= $task->id ?>"/>
-                                    <label class="custom-control-label" for="customSwitch-<?= $task->id ?>">
-                                        <?= $this->e($task->isCompleted) ? 'Завершена' : 'Активна' ?>
-                                    </label>
+                                    <label class="custom-control-label" for="customSwitch-<?= $task->id ?>"></label>
                                 </div>
 
                                 <div class="btn-group mt-3" role="group">
