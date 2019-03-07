@@ -1,0 +1,6 @@
+[submodule "laradock"]
+	path = laradock
+	url = https://github.com/Laradock/laradock
+[submodule "dayside"]
+	path = dayside
+	url = https://github.com/boomyjee/dayside
