@@ -8,9 +8,8 @@ use League\Plates\Engine;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
-class ShowSignIn implements RequestHandlerInterface
+class ShowSignIn
 {
     /**
      * @var Engine
@@ -22,7 +21,7 @@ class ShowSignIn implements RequestHandlerInterface
         $this->template = $template;
     }
 
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         $html = $this->template->render('login');
 

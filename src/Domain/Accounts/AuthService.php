@@ -34,8 +34,13 @@ abstract class AuthService
 
         $hash = $user->getPassword();
 
-        if ($hash !== null
-            && !password_verify($password, $hash)) {
+        if ($hash === null) {
+            $user->changePassword(
+                password_hash($password, PASSWORD_BCRYPT)
+            );
+
+            $this->users->save($user);
+        } elseif (!password_verify($password, $hash)) {
             throw new InvalidCredentials();
         }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BeeJeeET\Infrastructure\Persistence;
 
 use PDO;
+use Ramsey\Uuid\UuidFactory;
 use BeeJeeET\Domain\Tasks\TaskRepository;
 use Psr\Container\ContainerInterface;
 use BeeJeeET\Infrastructure\Persistence\Pdo\PdoTaskRepository;
@@ -15,6 +16,7 @@ class TaskRepositoryFactory
     {
         return new PdoTaskRepository(
             $container->get(PDO::class),
+            $container->get(UuidFactory::class),
             $container->get(TaskMapper::class)
         );
     }

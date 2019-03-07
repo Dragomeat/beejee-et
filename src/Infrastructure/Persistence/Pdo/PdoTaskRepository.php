@@ -14,6 +14,7 @@ use BeeJeeET\Infrastructure\Persistence\TaskProxy;
 use BeeJeeET\Infrastructure\Persistence\TaskMapper;
 use BeeJeeET\Domain\Specifications\SpecificationInterface;
 use BeeJeeET\Infrastructure\Persistence\Pdo\Specifications\PdoSpecification;
+use Ramsey\Uuid\UuidFactory;
 
 class PdoTaskRepository implements TaskRepository
 {
@@ -23,13 +24,19 @@ class PdoTaskRepository implements TaskRepository
     private $pdo;
 
     /**
+     * @var UuidFactory
+     */
+    private $uuid;
+
+    /**
      * @var TaskMapper
      */
     private $mapper;
 
-    public function __construct(PDO $pdo, TaskMapper $mapper)
+    public function __construct(PDO $pdo, UuidFactory $uuid, TaskMapper $mapper)
     {
         $this->pdo = $pdo;
+        $this->uuid = $uuid;
         $this->mapper = $mapper;
     }
 
@@ -39,11 +46,9 @@ class PdoTaskRepository implements TaskRepository
      */
     public function getNextIdentity(): TaskId
     {
-        $bytes = random_bytes(6);
-
-        $id = bin2hex($bytes);
-
-        return new TaskId($id);
+        return new TaskId(
+            (string)$this->uuid->uuid4()
+        );
     }
 
     /**

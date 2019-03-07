@@ -48,7 +48,7 @@
             <button type="submit" class="btn btn-primary mb-2">Применить</button>
         </form>
     </div>
-    <div class="row d-flex justify-content-center">
+    <div class="row">
         <form id="complete-form" class="form-inline" style="display: none;" action="" method="POST"></form>
         <div class="card-columns mb-3">
             <?php if (count($tasks) > 0): ?>
@@ -78,15 +78,14 @@
                                                      form.submit();"
                                             class="custom-control-input"
                                             <?= (int)$this->e($task->isCompleted) ? 'checked' : '' ?>
-                                            id="customSwitch1"/>
-                                    <label class="custom-control-label" for="customSwitch1">
+                                            id="customSwitch-<?= $task->id ?>"/>
+                                    <label class="custom-control-label" for="customSwitch-<?= $task->id ?>">
                                         <?= $this->e($task->isCompleted) ? 'Завершена' : 'Активна' ?>
                                     </label>
                                 </div>
 
-                                <div class="btn-group" role="group">
+                                <div class="btn-group mt-3" role="group">
                                     <a href="/tasks/<?= $task->id ?>" class="btn btn-primary"><i class="fas fa-pen"></i></a>
-                                    <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                                 </div>
                             <?php endif; ?>
                         </div>

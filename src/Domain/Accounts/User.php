@@ -75,6 +75,11 @@ class User
         return $this->password;
     }
 
+    public function changePassword(string $password): void
+    {
+        $this->setPassword($password);
+    }
+
     private function setPassword(?string $password): void
     {
         $this->password = $password;

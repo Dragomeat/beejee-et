@@ -5,26 +5,42 @@ declare(strict_types=1);
 namespace BeeJeeET\Ui\Actions;
 
 use Psr\Http\Message\ResponseInterface;
+use BeeJeeET\Ui\InputFilters\SignInFilter;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\RedirectResponse;
 use BeeJeeET\Application\Accounts\UserService;
 use BeeJeeET\Application\Accounts\SignInUserDto;
 
-class SignIn implements RequestHandlerInterface
+class SignIn
 {
+    /**
+     * @var SignInFilter
+     */
+    private $inputFilter;
+
     /**
      * @var UserService
      */
     private $users;
 
-    public function __construct(UserService $users)
-    {
+    public function __construct(
+        SignInFilter $inputFilter,
+        UserService $users
+    ) {
+        $this->inputFilter = $inputFilter;
         $this->users = $users;
     }
 
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
+        $this->inputFilter->setData(
+            $request->getParsedBody()
+        );
+
+        if (! $this->inputFilter->isValid()) {
+            return new RedirectResponse('/login');
+        }
+
         ['email' => $email, 'password' => $password] = $request->getParsedBody();
 
         $this->users->signIn(

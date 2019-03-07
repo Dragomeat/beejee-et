@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BeeJeeET\Infrastructure\Persistence;
 
 use PDO;
+use Ramsey\Uuid\UuidFactory;
 use Psr\Container\ContainerInterface;
 use BeeJeeET\Domain\Accounts\UserRepository;
 use BeeJeeET\Infrastructure\Persistence\Pdo\PdoUserRepository;
@@ -15,6 +16,7 @@ class UserRepositoryFactory
     {
         return new PdoUserRepository(
             $container->get(PDO::class),
+            $container->get(UuidFactory::class),
             $container->get(UserMapper::class)
         );
     }

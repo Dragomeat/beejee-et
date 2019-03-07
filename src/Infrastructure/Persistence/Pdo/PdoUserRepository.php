@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace BeeJeeET\Infrastructure\Persistence\Pdo;
 
 use PDO;
+use Ramsey\Uuid\UuidFactory;
+use BeeJeeET\Infrastructure\Persistence\UserProxy;
 use BeeJeeET\Domain\Accounts\User;
 use BeeJeeET\Domain\Accounts\UserId;
 use BeeJeeET\Domain\Accounts\UserNotFound;
@@ -19,13 +21,19 @@ class PdoUserRepository implements UserRepository
     private $pdo;
 
     /**
+     * @var UuidFactory
+     */
+    private $uuid;
+
+    /**
      * @var UserMapper
      */
     private $mapper;
 
-    public function __construct(PDO $pdo, UserMapper $mapper)
+    public function __construct(PDO $pdo, UuidFactory $uuid, UserMapper $mapper)
     {
         $this->pdo = $pdo;
+        $this->uuid = $uuid;
         $this->mapper = $mapper;
     }
 
@@ -35,11 +43,9 @@ class PdoUserRepository implements UserRepository
      */
     public function getNextIdentity(): UserId
     {
-        $bytes = random_bytes(6);
-
-        $id = bin2hex($bytes);
-
-        return new UserId($id);
+        return new UserId(
+            (string)$this->uuid->uuid4()
+        );
     }
 
     /**
@@ -73,7 +79,7 @@ class PdoUserRepository implements UserRepository
 
         $user = $query->fetch();
 
-        if (! $user) {
+        if (!$user) {
             throw UserNotFound::byEmail($email);
         }
 
@@ -105,10 +111,27 @@ class PdoUserRepository implements UserRepository
     {
         $attributes = $this->mapper->toArray($user);
 
-        $stmt = $this->pdo->prepare(
-            'INSERT INTO users (id, name, email, password, is_admin) VALUES (:id, :name, :email, :password, :is_admin)'
-        );
+        if ($user instanceof UserProxy && $user->isCreated()) {
+            $stmt = $this->pdo->prepare(<<<'SQL'
+                UPDATE `users` 
+                SET `name` = :name, `password` = :password
+                WHERE `id` = :id
+            SQL
+            );
 
-        $stmt->execute($attributes);
+            unset($attributes['email'], $attributes['is_admin']);
+
+            $stmt->execute($attributes);
+        } else {
+            $stmt = $this->pdo->prepare(
+                <<<'SQL'
+                    INSERT INTO
+                      `users`  (id, name, email, password, is_admin)
+                    VALUES (:id, :name, :email, :password, :is_admin)
+                SQL
+            );
+
+            $stmt->execute($attributes);
+        }
     }
 }

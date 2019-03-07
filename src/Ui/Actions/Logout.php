@@ -7,12 +7,10 @@ namespace BeeJeeET\Ui\Actions;
 use BeeJeeET\Domain\Accounts\AuthService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\RedirectResponse;
 
-class Logout implements RequestHandlerInterface
+class Logout
 {
-
     /**
      * @var AuthService
      */
@@ -23,7 +21,7 @@ class Logout implements RequestHandlerInterface
         $this->auth = $auth;
     }
 
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         $this->auth->logout();
 

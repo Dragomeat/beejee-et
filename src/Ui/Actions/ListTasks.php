@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace BeeJeeET\Ui\Actions;
 
-use Valitron\Validator;
 use League\Plates\Engine;
 use Pagerfanta\Adapter\FixedAdapter;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use BeeJeeET\Application\Tasks\TaskService;
 use Psr\Http\Message\ServerRequestInterface;
+use BeeJeeET\Ui\InputFilters\ListTasksFilter;
 use BeeJeeET\Application\Accounts\UserService;
 use Zend\Diactoros\Response\RedirectResponse;
 
 class ListTasks extends Action
 {
+    /**
+     * @var ListTasksFilter
+     */
+    private $inputFilter;
+
     /**
      * @var TaskService
      */
@@ -31,12 +36,13 @@ class ListTasks extends Action
      */
     private $template;
 
-
     public function __construct(
+        ListTasksFilter $inputFilter,
         TaskService $tasks,
         UserService $users,
         Engine $template
     ) {
+        $this->inputFilter = $inputFilter;
         $this->tasks = $tasks;
         $this->users = $users;
         $this->template = $template;
@@ -44,28 +50,30 @@ class ListTasks extends Action
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        $filters = array_merge(
+        $filters =  array_merge(
             [
-                'performer' => 'all',
+                'performer' => null,
                 'status' => 'all',
                 'page' => 1,
             ],
             $request->getQueryParams()
         );
 
-        $validator = new Validator($filters);
+        $this->inputFilter->setData($filters);
 
-        $validator->rule('in', 'status', ['all', 'active', 'completed']);
 
-        if (!$validator->validate()) {
+        if (! $this->inputFilter->isValid()) {
             return new RedirectResponse('/tasks');
         }
 
-        ['page' => $page, 'performer' => $performer, 'status' => $status] = $filters;
+        $page = (int) $filters['page'];
 
-        $page = (int) $page;
+        $dto = $this->tasks->list(
+            $page,
+            $filters['performer'] ?? 'all',
+            $filters['status']
+        );
 
-        $dto = $this->tasks->list($page, $performer, $status);
         $performers = $this->users->list();
 
         $adapter = new FixedAdapter($dto->total, $tasks = $dto->tasks);
