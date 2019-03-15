@@ -1,3 +1,11 @@
+<?php
+/**
+ * @var \BeeJeeET\Application\Tasks\TaskDto[] $tasks
+ * @var \BeeJeeET\Application\Tasks\PerformerDto[] $performers
+ * @var \Pagerfanta\Pagerfanta $pagerfanta
+ */
+?>
+
 <?php $this->layout('layout', ['title' => 'Список задач']) ?>
 
 <div class="container">

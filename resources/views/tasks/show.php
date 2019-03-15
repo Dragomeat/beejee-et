@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \BeeJeeET\Application\Tasks\TaskDto $task
+ */
+?>
+
 <?php $this->layout('layout', ['title' => 'Просмотр задачи']) ?>
 
 <div class="container">
