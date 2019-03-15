@@ -24,6 +24,7 @@ init: configs start ## Initialize project
 
 configs: ## Create configs if they don't exists
 	test -s ./laradock/.env || cp .env.laradock.example ./laradock/.env
+	cp ./migrations/* ./laradock/mysql/docker-entrypoint-initdb.d
 	@echo "Environment files have been created. Want to continue with default values? [Y/n]"
 	@read line; if [ $$line == "n" ]; then echo Aborting; exit 1 ; fi
 
