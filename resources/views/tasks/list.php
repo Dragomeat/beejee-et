@@ -34,7 +34,7 @@
         <form class="form-inline" action="/tasks">
             <div class="form-group mb-2">
                 <select class="custom-select" name="performer" id="performer">
-                    <option value="all">Все исполнители</option>
+                    <option value>Все исполнители</option>
 
                     <?php foreach ($performers as $performer): ?>
                         <option <?= $performer->id === $filters['performer'] ? 'selected' : '' ?>

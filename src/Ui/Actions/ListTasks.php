@@ -51,27 +51,25 @@ class ListTasks extends Action
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
-        $filters =  array_merge(
-            [
-                'performer' => null,
-                'status' => 'all',
-                'page' => 1,
-            ],
-            $request->getQueryParams()
-        );
+        $query = $request->getQueryParams();
+
+        $filters = [
+            'status' => $query['status'] ?? 'all',
+            'page' => (int)($query['page'] ?? 1),
+            'performer' => !empty($query['performer'])
+                ? $query['performer']
+                : null,
+        ];
 
         $this->inputFilter->setData($filters);
 
-
-        if (! $this->inputFilter->isValid()) {
+        if (!$this->inputFilter->isValid()) {
             return new RedirectResponse('/tasks');
         }
 
-        $page = (int) $filters['page'];
-
         $dto = $this->tasks->list(
             new ListTasksDto(
-                $page,
+                $filters['page'],
                 $filters['performer'] ?? 'all',
                 $filters['status']
             )
@@ -81,7 +79,7 @@ class ListTasks extends Action
 
         $adapter = new FixedAdapter($dto->total, $tasks = $dto->tasks);
 
-        $pagerfanta = $this->pagerfanta($adapter, $page);
+        $pagerfanta = $this->pagerfanta($adapter, $filters['page']);
 
         $html = $this->template->render(
             'tasks::list',
