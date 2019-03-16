@@ -2,6 +2,7 @@
 /**
  * @var \BeeJeeET\Application\Tasks\TaskDto[] $tasks
  * @var \BeeJeeET\Application\Tasks\PerformerDto[] $performers
+ * @var array<string, mixed> $filters
  * @var \Pagerfanta\Pagerfanta $pagerfanta
  */
 ?>
@@ -36,7 +37,7 @@
                     <option value="all">Все исполнители</option>
 
                     <?php foreach ($performers as $performer): ?>
-                        <option <?= $performer->id === ($_GET['performer'] ?? '') ? 'selected' : '' ?>
+                        <option <?= $performer->id === $filters['performer'] ? 'selected' : '' ?>
                                 value="<?= $performer->id ?>"><?= $this->e($performer->name) ?></option>
                     <?php endforeach ?>
                 </select>
@@ -49,7 +50,7 @@
                                        'active' => 'Активные',
                                        'completed' => 'Завершенные'
                                    ] as $status => $label): ?>
-                        <option <?= $status === ($_GET['status'] ?? '') ? 'selected' : '' ?>
+                        <option <?= $status === $filters['status'] ? 'selected' : '' ?>
                                 value="<?= $status ?>"><?= $this->e($label) ?></option>
                     <?php endforeach ?>
                 </select>

@@ -82,7 +82,7 @@ class ListTasks extends Action
 
         $html = $this->template->render(
             'tasks::list',
-            compact('tasks', 'performers', 'pagerfanta')
+            compact('tasks', 'performers', 'filters', 'pagerfanta')
         );
 
         return new HtmlResponse($html);
