@@ -56,18 +56,25 @@ class TaskService
         return $this->assembler->toDto($task);
     }
 
-    public function list(int $page, string $performer, string $status): SlicedTasksDto
+    public function list(ListTasksDto $dto): SlicedTasksDto
     {
-        $slice = new Slice(($page - 1) * 3, 3);
+        $slice = new Slice(
+            ($dto->page - 1) * $dto->perPage,
+            $dto->perPage
+        );
 
         $specification = null;
 
-        if ($performer !== 'all') {
-            $specification = $this->specificationFactory->createByPerformer($performer);
+        if ($dto->performer !== 'all') {
+            $specification = $this->specificationFactory->createByPerformer(
+                $dto->performer
+            );
         }
 
-        if ($status !== 'all') {
-            $byStatus = $this->specificationFactory->createByStatus($status === 'completed');
+        if ($dto->status !== 'all') {
+            $byStatus = $this->specificationFactory->createByStatus(
+                $dto->status === 'completed'
+            );
 
             $specification = $specification !== null
                 ? $specification->andSpecification($byStatus)

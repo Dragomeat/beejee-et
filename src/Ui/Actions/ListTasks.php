@@ -10,6 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use BeeJeeET\Application\Tasks\TaskService;
 use Psr\Http\Message\ServerRequestInterface;
+use BeeJeeET\Application\Tasks\ListTasksDto;
 use BeeJeeET\Ui\InputFilters\ListTasksFilter;
 use BeeJeeET\Application\Accounts\UserService;
 use Zend\Diactoros\Response\RedirectResponse;
@@ -69,9 +70,11 @@ class ListTasks extends Action
         $page = (int) $filters['page'];
 
         $dto = $this->tasks->list(
-            $page,
-            $filters['performer'] ?? 'all',
-            $filters['status']
+            new ListTasksDto(
+                $page,
+                $filters['performer'] ?? 'all',
+                $filters['status']
+            )
         );
 
         $performers = $this->users->list();

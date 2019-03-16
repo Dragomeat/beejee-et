@@ -9,11 +9,14 @@ use Pagerfanta\Adapter\AdapterInterface;
 
 class Action
 {
-    public function pagerfanta(AdapterInterface $adapter, int $page): Pagerfanta
-    {
+    public function pagerfanta(
+        AdapterInterface $adapter,
+        int $page,
+        int $perPage = 3
+    ): Pagerfanta {
         $pagerfanta = new Pagerfanta($adapter);
 
-        $pagerfanta->setMaxPerPage(3);
+        $pagerfanta->setMaxPerPage($perPage);
         $pagerfanta->setCurrentPage($page);
 
         return $pagerfanta;
