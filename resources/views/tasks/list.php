@@ -4,6 +4,7 @@
  * @var \BeeJeeET\Application\Tasks\PerformerDto[] $performers
  * @var array<string, mixed> $filters
  * @var \Pagerfanta\Pagerfanta $pagerfanta
+ * @var callable $routeGenerator
  */
 ?>
 
@@ -108,6 +109,6 @@
         </div>
     </div>
     <div class="row">
-        <?= $this->pagerfanta($pagerfanta) ?>
+        <?= $this->pagerfanta($pagerfanta, $routeGenerator) ?>
     </div>
 </div>

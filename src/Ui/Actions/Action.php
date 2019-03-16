@@ -6,9 +6,21 @@ namespace BeeJeeET\Ui\Actions;
 
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\AdapterInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class Action
 {
+    public function getRefererOr(
+        ServerRequestInterface $request,
+        string $default = '/'
+    ): string {
+        $headers = $request->getHeaders();
+
+        return array_key_exists('referer', $headers)
+            ? $headers['referer'][0]
+            : $default;
+    }
+
     public function pagerfanta(
         AdapterInterface $adapter,
         int $page,

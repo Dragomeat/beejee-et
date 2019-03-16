@@ -14,7 +14,7 @@ use BeeJeeET\Application\Tasks\CreateTaskDto;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\RedirectResponse;
 
-class CreateTask
+class CreateTask extends Action
 {
     /**
      * @var CreateTaskFilter
@@ -50,12 +50,14 @@ class CreateTask
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
+        $referer = $this->getRefererOr($request, '/tasks');
+
         $this->inputFilter->setData(
             $request->getParsedBody()
         );
 
         if (! $this->inputFilter->isValid()) {
-            return new RedirectResponse('/tasks');
+            return new RedirectResponse($referer);
         }
 
         ['goal' => $goal] = $request->getParsedBody();
@@ -72,6 +74,6 @@ class CreateTask
             new CreateTaskDto($goal)
         );
 
-        return new RedirectResponse('/tasks');
+        return new RedirectResponse($referer);
     }
 }

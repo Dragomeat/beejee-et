@@ -38,7 +38,7 @@ class UpdateTask
         );
 
         if (! $this->inputFilter->isValid()) {
-            return new RedirectResponse('/tasks');
+            return new RedirectResponse($request->getUri());
         }
 
         ['goal' => $goal] = $request->getParsedBody();
@@ -47,6 +47,8 @@ class UpdateTask
             new UpdateTaskDto($args['id'], $goal)
         );
 
-        return new RedirectResponse('/tasks');
+        return new RedirectResponse(
+            $request->getParsedBody()['referer'] ?? '/tasks'
+        );
     }
 }

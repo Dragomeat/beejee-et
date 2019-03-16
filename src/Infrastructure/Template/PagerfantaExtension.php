@@ -19,6 +19,7 @@ class PagerfantaExtension implements ExtensionInterface
 
     public function render(
         Pagerfanta $pagerfanta,
+        ?callable $routeGenerator = null,
         string $template = TwitterBootstrap4View::class
     ): string {
         if ($pagerfanta->getNbResults() === 0) {
@@ -32,7 +33,7 @@ class PagerfantaExtension implements ExtensionInterface
 
         return $template->render(
             $pagerfanta,
-            function (int $page): string {
+            $routeGenerator ?? function (int $page): string {
                 return '?page=' . $page;
             },
             ['proximity' => 3]

@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\RedirectResponse;
 use BeeJeeET\Application\Tasks\CompleteTaskDto;
 
-class CompleteTask
+class CompleteTask extends Action
 {
     /**
      * @var TaskService
@@ -24,10 +24,12 @@ class CompleteTask
 
     public function __invoke(ServerRequestInterface $request, array $args): ResponseInterface
     {
+        $referer = $this->getRefererOr($request, '/tasks');
+
         $this->tasks->complete(
             new CompleteTaskDto($args['id'])
         );
 
-        return new RedirectResponse('/tasks');
+        return new RedirectResponse($referer);
     }
 }

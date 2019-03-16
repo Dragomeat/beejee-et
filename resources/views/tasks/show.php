@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \BeeJeeET\Application\Tasks\TaskDto $task
+ * @var string $referer
  */
 ?>
 
@@ -10,6 +11,7 @@
     <div class="row">
         <form action="" method="POST">
             <input type="hidden" name="<?= $this->csrf()->getFormKey() ?>" value="<?= $this->csrf()->generateToken() ?>"/>
+            <input type="hidden" name="referer" value="<?= $referer ?>"/>
             <div class="form-group">
                 <input class="form-control"
                        name="goal"

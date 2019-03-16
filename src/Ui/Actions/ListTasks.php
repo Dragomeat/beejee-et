@@ -81,9 +81,26 @@ class ListTasks extends Action
 
         $pagerfanta = $this->pagerfanta($adapter, $filters['page']);
 
+        $routeGenerator = function (int $page) use ($filters): string {
+            $query = array_merge(
+                $filters,
+                [
+                    'page' => $page,
+                ]
+            );
+
+            return '?' . http_build_query($query);
+        };
+
         $html = $this->template->render(
             'tasks::list',
-            compact('tasks', 'performers', 'filters', 'pagerfanta')
+            compact(
+                'tasks',
+                'performers',
+                'filters',
+                'pagerfanta',
+                'routeGenerator'
+            )
         );
 
         return new HtmlResponse($html);

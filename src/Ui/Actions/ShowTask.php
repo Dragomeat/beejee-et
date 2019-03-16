@@ -10,7 +10,7 @@ use Zend\Diactoros\Response\HtmlResponse;
 use BeeJeeET\Application\Tasks\TaskService;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ShowTask
+class ShowTask extends Action
 {
     /**
      * @var TaskService
@@ -32,11 +32,13 @@ class ShowTask
 
     public function __invoke(ServerRequestInterface $request, array $args): ResponseInterface
     {
+        $referer = $this->getRefererOr($request, '/tasks');
+
         $task = $this->tasks->get($args['id']);
 
         $html = $this->template->render(
             'tasks::show',
-            compact('task')
+            compact('task', 'referer')
         );
 
         return new HtmlResponse($html);
