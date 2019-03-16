@@ -81,16 +81,8 @@
                                 <div class="custom-control custom-switch">
                                     <input
                                             type="checkbox"
-                                            onchange="event.preventDefault();
-                                                     var form = document.getElementById('complete-form');
-
-                                                     var action = this.checked
-                                                            ? 'complete'
-                                                            : 'activate';
-
-                                                     form.action = `/tasks/<?= $task->id ?>/${action}`;
-                                                     form.submit();"
-                                            class="custom-control-input"
+                                            data-id="<?= $task->id ?>"
+                                            class="custom-control-input change-task-status"
                                             <?= (int)$this->e($task->isCompleted) ? 'checked' : '' ?>
                                             id="customSwitch-<?= $task->id ?>"/>
                                     <label class="custom-control-label" for="customSwitch-<?= $task->id ?>"></label>
@@ -112,3 +104,4 @@
         <?= $this->pagerfanta($pagerfanta, $routeGenerator) ?>
     </div>
 </div>
+<script src="<?=$this->asset('/js/tasks.js')?>"></script>

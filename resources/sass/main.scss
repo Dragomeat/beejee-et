@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+@import 'variables';
+
+@import '~bootstrap/scss/bootstrap';
+
+@import '~@fortawesome/fontawesome-free/css/all.css';
+
+.my-navbar {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}

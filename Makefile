@@ -17,7 +17,9 @@ help: ## Show help text
 
 init: configs start ## Initialize project
 	${docker_compose_bin} exec --user=laradock workspace bash -c "\
-	     composer install"
+	     composer install && \
+	     npm i && \
+	     npm run prod"
 	@echo "*********************************************"
 	@echo "* This project was successfully initialized *"
 	@echo "*********************************************"
@@ -25,6 +27,7 @@ init: configs start ## Initialize project
 configs: ## Create configs if they don't exists
 	test -s ./laradock/.env || cp .env.laradock.example ./laradock/.env
 	cp ./migrations/* ./laradock/mysql/docker-entrypoint-initdb.d
+	cp ./site.nginx.conf ./laradock/nginx/sites/default.conf
 	@echo "Environment files have been created. Want to continue with default values? [Y/n]"
 	@read line; if [ $$line == "n" ]; then echo Aborting; exit 1 ; fi
 
@@ -36,3 +39,7 @@ shell: ## Conneect to shell in workspace container
 
 stop: ## Stop project
 	${docker_compose_bin} stop ${containers}
+
+down: ## Uninstall project
+	${docker_compose_bin} down
+	rm -rf ~/.laradock/beejee-et
