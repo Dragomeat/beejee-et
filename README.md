@@ -1,5 +1,8 @@
 # beejee-et
 
+This branch contains a small test task for an interview, made specifically with some errors and assumptions. 
+Please do not use this code on production projects.
+
 ## Installation
 
 You need an installed docker
