@@ -190,20 +190,23 @@ class PdoTaskRepository implements TaskRepository
         if ($task instanceof TaskProxy && $task->isCreated()) {
             $stmt = $this->pdo->prepare(<<<'SQL'
                 UPDATE `tasks` 
-                SET `goal` = :goal,`is_completed` = :is_completed
+                SET 
+                    `goal` = :goal,
+                    `is_completed` = :is_completed,
+                    `updated_at` = :updated_at
                 WHERE `id` = :id
             SQL
             );
 
-            unset($attributes['performer_id']);
+            unset($attributes['performer_id'], $attributes['created_at']);
 
             $stmt->execute($attributes);
         } else {
             $stmt = $this->pdo->prepare(
                 <<<'SQL'
                     INSERT INTO
-                      `tasks` (`id`, `performer_id`, `goal`, `is_completed`) 
-                    VALUES (:id, :performer_id, :goal, :is_completed)
+                      `tasks` (`id`, `performer_id`, `goal`, `is_completed`, `updated_at`, `created_at`) 
+                    VALUES (:id, :performer_id, :goal, :is_completed, :updated_at, :created_at)
                 SQL
             );
 

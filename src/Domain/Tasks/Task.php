@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BeeJeeET\Domain\Tasks;
 
+use DateTimeImmutable;
 use Webmozart\Assert\Assert;
 
 class Task
@@ -31,11 +32,22 @@ class Task
      */
     protected $isCompleted = false;
 
+    /**
+     * @var DateTimeImmutable
+     */
+    protected $updatedAt;
+
+    /**
+     * @var DateTimeImmutable
+     */
+    protected $createdAt;
+
     public function __construct(TaskId $id, Performer $performer, string $goal)
     {
         $this->id = $id;
         $this->performer = $performer;
         $this->setGoal($goal);
+        $this->createdAt = $this->updatedAt = new DateTimeImmutable();
     }
 
     public function getId(): TaskId
@@ -56,6 +68,7 @@ class Task
     public function changeGoal(string $goal): void
     {
         $this->setGoal($goal);
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     private function setGoal(string $goal): void
@@ -65,9 +78,6 @@ class Task
         $this->goal = $goal;
     }
 
-    /**
-     * @return bool
-     */
     public function isCompleted(): bool
     {
         return $this->isCompleted;
@@ -76,6 +86,7 @@ class Task
     public function complete(): Task
     {
         $this->isCompleted = true;
+        $this->updatedAt = new DateTimeImmutable();
 
         return $this;
     }
@@ -83,6 +94,7 @@ class Task
     public function activate(): Task
     {
         $this->isCompleted = false;
+        $this->updatedAt = new DateTimeImmutable();
 
         return $this;
     }

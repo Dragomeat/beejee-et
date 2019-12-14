@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BeeJeeET\Infrastructure\Persistence;
 
+use DateTimeImmutable;
 use BeeJeeET\Domain\Tasks\Task;
 use BeeJeeET\Domain\Tasks\TaskId;
 use BeeJeeET\Infrastructure\ObjectHydrator;
@@ -40,6 +41,8 @@ class TaskMapper
             'performer' => $performer,
             'goal' => $values['goal'],
             'is_completed' => (int)$values['isCompleted'],
+            'updated_at' => $values['updatedAt']->format('Y-m-d H:i:s'),
+            'created_at' => $values['createdAt']->format('Y-m-d H:i:s'),
         ];
     }
 
@@ -56,6 +59,8 @@ class TaskMapper
             'performer' => $this->performerMapper->toEntity($performer),
             'goal' => $values['goal'],
             'isCompleted' => (bool)$values['is_completed'],
+            'updatedAt' => new DateTimeImmutable($values['updated_at']),
+            'createdAt' => new DateTimeImmutable($values['created_at']),
         ];
 
         /**
