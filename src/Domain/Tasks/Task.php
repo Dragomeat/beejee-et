@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace BeeJeeET\Domain\Tasks;
 
+use Webmozart\Assert\Assert;
+
 class Task
 {
+    private const MIN_GOAL_LENGTH = 6;
+    private const MAX_GOAL_LENGTH = 120;
+
     /**
      * @var TaskId
      */
@@ -55,6 +60,8 @@ class Task
 
     private function setGoal(string $goal): void
     {
+        Assert::lengthBetween($goal, self::MIN_GOAL_LENGTH, self::MAX_GOAL_LENGTH);
+
         $this->goal = $goal;
     }
 
