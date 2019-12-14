@@ -75,7 +75,11 @@
                                     <?= $task->isCompleted ? 'Завершена' : 'В работе' ?>
                                 </span>
                                 <small class="text-muted">
-                                    @<?= $this->e($task->performer->name) ?>
+                                    <a
+                                        href="/tasks?performer=<?= $task->performer->id ?>"
+                                    >
+                                        @<?= $this->e($task->performer->name) ?>
+                                    </a>
                                 </small>
                             </p>
 
