@@ -18,10 +18,17 @@
                        type="text"
                        value="<?= $task->goal ?>"
                        placeholder="Задача"
+                       <?= $task->isCompleted ? 'readonly' : '' ?>
                 />
             </div>
 
-            <button type="submit" class="btn btn-primary">Редактировать</button>
+            <button
+                type="submit"
+                class="btn btn-primary"
+                <?= $task->isCompleted ? 'disabled' : '' ?>
+            >
+              Редактировать
+            </button>
         </form>
     </div>
 </div>

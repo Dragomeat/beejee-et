@@ -91,9 +91,11 @@
                                     <label class="custom-control-label" for="customSwitch-<?= $task->id ?>"></label>
                                 </div>
 
-                                <div class="btn-group mt-3" role="group">
-                                    <a href="/tasks/<?= $task->id ?>" class="btn btn-primary"><i class="fas fa-pen"></i></a>
-                                </div>
+                                <?php if (!$task->isCompleted): ?>
+                                    <div class="btn-group mt-3" role="group">
+                                        <a href="/tasks/<?= $task->id ?>" class="btn btn-primary"><i class="fas fa-pen"></i></a>
+                                    </div>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
                     </div>
