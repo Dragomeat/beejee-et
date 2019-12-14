@@ -67,6 +67,10 @@ class Task
 
     public function changeGoal(string $goal): void
     {
+        if ($this->isCompleted) {
+            throw TaskGoalCannotBeChanged::taskAlreadyCompleted($this->id);
+        }
+
         $this->setGoal($goal);
         $this->updatedAt = new DateTimeImmutable();
     }
