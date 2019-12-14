@@ -48,7 +48,7 @@
                 <select class="custom-select" name="status" id="status">
                     <?php foreach ([
                                        'all' => 'Все',
-                                       'active' => 'Активные',
+                                       'active' => 'В работе',
                                        'completed' => 'Завершенные'
                                    ] as $status => $label): ?>
                         <option <?= $status === $filters['status'] ? 'selected' : '' ?>
@@ -69,10 +69,13 @@
                 <?php foreach ($tasks as $task): ?>
                     <div class="card">
                         <div class="card-body">
-                            <p class="card-text"><?= $this->e($task->goal) ?></p>
-                            <p class="card-text">
+                            <p class="card-title"><?= $this->e($task->goal) ?></p>
+                            <p class="card-subtitle">
+                                <span class="badge badge-<?= $task->isCompleted ? 'success' : 'light' ?>">
+                                    <?= $task->isCompleted ? 'Завершена' : 'В работе' ?>
+                                </span>
                                 <small class="text-muted">
-                                    @<?= $this->e($task->performer->name) ?> - <?= $this->e($task->isCompleted) ? 'Завершена' : 'Активна' ?>
+                                    @<?= $this->e($task->performer->name) ?>
                                 </small>
                             </p>
 
